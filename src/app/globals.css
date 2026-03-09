@@ -1,24 +1,47 @@
 @import "tailwindcss";
 
-/* Define the custom font families for Tailwind */
 @theme {
+  /* Mapping CSS Variables to Tailwind Utility Classes */
   --font-satoshi: var(--font-satoshi);
   --font-sen: var(--font-sen);
+  
+  --color-bg-primary: var(--bg-primary);
+  --color-text-primary: var(--text-primary);
+  --color-border-subtle: var(--border-subtle);
 }
 
 :root {
-  --background: #0a0a0a; /* Force dark mode for that premium look */
-  --foreground: #ffffff;
+  /* Light Theme Defaults */
+  --bg-primary: #f5f5f7; /* Apple Off-White */
+  --text-primary: #1d1d1f;
+  --border-subtle: rgba(0, 0, 0, 0.1);
+  --selection-bg: #000000;
+  --selection-text: #ffffff;
 }
 
+[data-theme='dark'] {
+  /* Dark Theme Overrides */
+  --bg-primary: #0a0a0a;
+  --text-primary: #ffffff;
+  --border-subtle: rgba(255, 255, 255, 0.1);
+  --selection-bg: #ffffff;
+  --selection-text: #000000;
+}
+
+/* Global Styles */
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
   font-family: var(--font-sen), sans-serif;
+  transition: background-color 0.5s ease, color 0.5s ease;
   overflow-x: hidden;
 }
 
-/* GSAP Masking Classes */
+h1, h2, h3, .font-satoshi {
+  font-family: var(--font-satoshi), sans-serif;
+}
+
+/* GSAP Masking Logic */
 .line-mask {
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   overflow: hidden;
@@ -28,8 +51,7 @@ body {
   transform: translateY(110%);
 }
 
-/* Apple-style selection */
 ::selection {
-  background: white;
-  color: black;
+  background-color: var(--selection-bg);
+  color: var(--selection-text);
 }

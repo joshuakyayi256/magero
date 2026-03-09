@@ -1,77 +1,318 @@
 "use client";
-import { motion } from "framer-motion";
-import { Github, Linkedin, Globe, Plus } from "lucide-react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+import { SplitText } from "gsap/dist/SplitText";
+import { Github, Linkedin, Globe, ArrowUpRight } from "lucide-react";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+}
 
 const skills = [
-  "Testing and Debugging",
+  "Testing & Debugging",
   "Agile Methodologies",
   "Web Standards",
   "Progressive Web Apps",
   "Design Systems",
-  "Full-Stack Architecture"
+  "Full-Stack Architecture",
+  "Performance Optimisation",
+  "System Design",
+];
+
+const stats = [
+  { value: "4+",  label: "Years Building" },
+  { value: "12+", label: "Systems Shipped" },
+  { value: "3×",  label: "Avg. Growth" },
+];
+
+const socials = [
+  { icon: <Github   size={16} />, label: "GitHub",   href: "#" },
+  { icon: <Linkedin size={16} />, label: "LinkedIn",  href: "#" },
+  { icon: <Globe    size={16} />, label: "Portfolio", href: "#" },
 ];
 
 export default function ExperienceBrief() {
+  const sectionRef  = useRef<HTMLElement>(null);
+  const eyebrowRef  = useRef<HTMLDivElement>(null);
+  const bioRef      = useRef<HTMLParagraphElement>(null);
+  const statsRef    = useRef<HTMLDivElement>(null);
+  const pillsRef    = useRef<HTMLDivElement>(null);
+  const socialsRef  = useRef<HTMLDivElement>(null);
+  const lineRef     = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+
+      // 1. Vertical divider line grows downward
+      gsap.from(lineRef.current, {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 78%" },
+        scaleY: 0,
+        transformOrigin: "top center",
+        duration: 1.2,
+        ease: "expo.out",
+      });
+
+      // 2. Eyebrow slide in
+      gsap.from(eyebrowRef.current, {
+        scrollTrigger: { trigger: sectionRef.current, start: "top 76%" },
+        x: -24,
+        opacity: 0,
+        duration: 0.8,
+        ease: "power3.out",
+      });
+
+      // 3. Socials — stagger up
+      const socialItems = socialsRef.current?.querySelectorAll(".social-item");
+      if (socialItems?.length) {
+        gsap.from(socialItems, {
+          scrollTrigger: { trigger: sectionRef.current, start: "top 74%" },
+          y: 20,
+          opacity: 0,
+          stagger: 0.1,
+          duration: 0.8,
+          ease: "power3.out",
+          delay: 0.2,
+        });
+      }
+
+      // 4. Stats — count-up feel with stagger
+      const statItems = statsRef.current?.querySelectorAll(".stat-item");
+      if (statItems?.length) {
+        gsap.from(statItems, {
+          scrollTrigger: { trigger: sectionRef.current, start: "top 70%" },
+          y: 30,
+          opacity: 0,
+          stagger: 0.12,
+          duration: 0.9,
+          ease: "back.out(1.6)",
+          delay: 0.15,
+        });
+      }
+
+      // 5. Bio paragraph — SplitText line reveal
+      if (bioRef.current) {
+        const split = new SplitText(bioRef.current, {
+          type: "lines",
+          linesClass: "bio-line-clip",
+        });
+        document.querySelectorAll<HTMLElement>(".bio-line-clip").forEach((el) => {
+          el.style.overflow = "hidden";
+          el.style.display  = "block";
+        });
+        gsap.from(split.lines, {
+          scrollTrigger: { trigger: sectionRef.current, start: "top 68%" },
+          yPercent: 105,
+          opacity: 0,
+          stagger: 0.07,
+          duration: 0.95,
+          ease: "power4.out",
+          delay: 0.1,
+        });
+      }
+
+      // 6. Skill pills — stagger with back.out inertia
+      const pills = pillsRef.current?.querySelectorAll(".skill-pill");
+      if (pills?.length) {
+        gsap.from(pills, {
+          scrollTrigger: { trigger: sectionRef.current, start: "top 60%" },
+          y: 22,
+          opacity: 0,
+          scale: 0.92,
+          stagger: 0.05,
+          duration: 0.7,
+          ease: "back.out(1.5)",
+          delay: 0.3,
+        });
+      }
+
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  // Magnetic hover for social icons
+  const handleSocialMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const el   = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const dx   = (e.clientX - rect.left - rect.width  / 2) * 0.3;
+    const dy   = (e.clientY - rect.top  - rect.height / 2) * 0.3;
+    gsap.to(el, { x: dx, y: dy, duration: 0.3, ease: "power2.out" });
+  };
+  const handleSocialLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    gsap.to(e.currentTarget, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.45)" });
+  };
+
   return (
-    <section className="bg-[#0a0a0a] text-white py-24 px-6 md:px-20 border-t border-white/5">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
-        
-        {/* Left Column: Socials & "Meta" Info */}
-        <div className="md:col-span-4 flex flex-col justify-between">
-          <div>
-            <h3 className="font-satoshi text-sm uppercase tracking-[0.2em] text-white/40 mb-8 flex items-center gap-2">
-              <Plus size={14} /> Connect
-            </h3>
-            <div className="flex gap-4">
-              {[
-                { icon: <Github size={20} />, link: "#" },
-                { icon: <Linkedin size={20} />, link: "#" },
-                { icon: <Globe size={20} />, link: "#" }
-              ].map((social, i) => (
-                <motion.a
-                  key={i}
-                  href={social.link}
-                  whileHover={{ y: -3, backgroundColor: "rgba(255,255,255,0.1)" }}
-                  className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center transition-colors hover:border-white/40"
+    <section
+      ref={sectionRef}
+      className="relative py-24 md:py-32 px-6 md:px-16 lg:px-24 border-t overflow-hidden transition-colors duration-500"
+      style={{ borderColor: "var(--border-subtle)" }}
+    >
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-16 gap-x-8 xl:gap-x-16">
+
+          {/* ── LEFT COLUMN ── */}
+          <div className="lg:col-span-4 flex flex-col gap-14">
+
+            {/* Eyebrow */}
+            <div ref={eyebrowRef} className="flex items-center gap-3">
+              <span
+                className="block w-6 h-px"
+                style={{ background: "var(--text-primary)", opacity: 0.2 }}
+              />
+              <span
+                className="font-satoshi text-[9px] uppercase tracking-[0.55em] font-black"
+                style={{ color: "var(--text-primary)", opacity: 0.4 }}
+              >
+                Experience Brief
+              </span>
+            </div>
+
+            {/* Stats */}
+            <div
+              ref={statsRef}
+              className="grid grid-cols-3 lg:grid-cols-1 gap-8 lg:gap-10 border-t lg:border-t-0"
+              style={{ borderColor: "var(--border-subtle)" }}
+            >
+              {stats.map(({ value, label }) => (
+                <div key={label} className="stat-item pt-6 lg:pt-0 border-t lg:border-t" style={{ borderColor: "var(--border-subtle)" }}>
+                  <p
+                    className="font-satoshi font-black tracking-tighter leading-none mb-1"
+                    style={{
+                      fontSize: "clamp(2rem, 4vw, 3rem)",
+                      color: "var(--text-primary)",
+                    }}
+                  >
+                    {value}
+                  </p>
+                  <p
+                    className="font-sen text-xs uppercase tracking-[0.4em]"
+                    style={{ color: "var(--text-primary)", opacity: 0.4 }}
+                  >
+                    {label}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Socials */}
+            <div ref={socialsRef} className="space-y-3">
+              <p
+                className="font-satoshi text-[9px] uppercase tracking-[0.5em] font-black mb-5"
+                style={{ color: "var(--text-primary)", opacity: 0.3 }}
+              >
+                Connect
+              </p>
+              {socials.map(({ icon, label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  className="social-item group flex items-center justify-between py-3 border-b transition-all duration-300"
+                  style={{ borderColor: "var(--border-subtle)" }}
+                  onMouseMove={handleSocialMove}
+                  onMouseLeave={handleSocialLeave}
+                  onMouseEnter={(e) => {
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "color-mix(in srgb, var(--text-primary) 30%, transparent)";
+                  }}
                 >
-                  {social.icon}
-                </motion.a>
+                  <div className="flex items-center gap-3">
+                    <span style={{ color: "var(--text-primary)", opacity: 0.5 }}>
+                      {icon}
+                    </span>
+                    <span
+                      className="font-sen text-sm transition-all duration-300 group-hover:opacity-100"
+                      style={{ color: "var(--text-primary)", opacity: 0.6 }}
+                    >
+                      {label}
+                    </span>
+                  </div>
+                  <ArrowUpRight
+                    size={13}
+                    className="transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    style={{ color: "var(--text-primary)", opacity: 0.2 }}
+                  />
+                </a>
               ))}
             </div>
           </div>
-        </div>
 
-        {/* Right Column: Bio & Skills */}
-        <div className="md:col-span-8">
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="font-sen text-xl md:text-2xl leading-relaxed text-white/80 mb-16"
-          >
-            My work spans the architecture of <span className="text-white font-medium">scalable web platforms</span>, 
-            enterprise-grade systems, and data-driven dashboards. I specialize in bridging the gap between 
-            high-end UX design and seamless <span className="text-white font-medium">back-end integration</span>, 
-            ensuring every product is as performant as it is visually authoritative.
-          </motion.p>
+          {/* ── Vertical divider — desktop only ── */}
+          <div className="hidden lg:flex lg:col-span-1 justify-center">
+            <div
+              ref={lineRef}
+              className="w-px h-full min-h-80"
+              style={{ background: "var(--border-subtle)" }}
+            />
+          </div>
 
-          {/* Skill Pills - Redesigned for Premium Look */}
-          <div className="flex flex-wrap gap-3">
-            {skills.map((skill, index) => (
-              <motion.span
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="px-6 py-3 rounded-full border border-white/5 bg-white/2 font-satoshi text-xs uppercase tracking-widest text-white/60 hover:border-white/20 hover:text-white transition-all cursor-default"
+          {/* ── RIGHT COLUMN ── */}
+          <div className="lg:col-span-7 flex flex-col gap-14">
+
+            {/* Bio */}
+            <p
+              ref={bioRef}
+              className="font-sen leading-relaxed"
+              style={{
+                fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
+                color: "var(--text-primary)",
+                opacity: 0.75,
+              }}
+            >
+              My work spans the architecture of{" "}
+              <strong style={{ color: "var(--text-primary)", opacity: 1, fontWeight: 700 }}>
+                scalable web platforms
+              </strong>
+              , enterprise-grade systems, and data-driven dashboards. I specialise in
+              bridging the gap between high-end UX design and seamless{" "}
+              <strong style={{ color: "var(--text-primary)", opacity: 1, fontWeight: 700 }}>
+                back-end integration
+              </strong>
+              , ensuring every product is as performant as it is visually authoritative.
+            </p>
+
+            {/* Divider */}
+            <div
+              className="h-px w-full"
+              style={{ background: "var(--border-subtle)" }}
+            />
+
+            {/* Skill pills */}
+            <div>
+              <p
+                className="font-satoshi text-[9px] uppercase tracking-[0.5em] font-black mb-6"
+                style={{ color: "var(--text-primary)", opacity: 0.3 }}
               >
-                {skill}
-              </motion.span>
-            ))}
+                Disciplines
+              </p>
+              <div ref={pillsRef} className="flex flex-wrap gap-2.5">
+                {skills.map((skill) => (
+                  <span
+                    key={skill}
+                    className="skill-pill font-satoshi text-[10px] uppercase tracking-[0.4em] px-4 py-2.5 rounded-full border cursor-default transition-all duration-300"
+                    style={{
+                      borderColor: "var(--border-subtle)",
+                      color: "var(--text-primary)",
+                      opacity: 0.65,
+                    }}
+                    onMouseEnter={(e) => {
+                      gsap.to(e.currentTarget, { scale: 1.06, duration: 0.25, ease: "power2.out" });
+                      (e.currentTarget as HTMLElement).style.opacity = "1";
+                    }}
+                    onMouseLeave={(e) => {
+                      gsap.to(e.currentTarget, { scale: 1, duration: 0.5, ease: "elastic.out(1, 0.5)" });
+                      (e.currentTarget as HTMLElement).style.opacity = "0.65";
+                    }}
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
-
       </div>
     </section>
   );

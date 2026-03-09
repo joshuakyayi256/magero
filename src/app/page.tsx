@@ -1,35 +1,52 @@
 "use client";
-import React from "react";
+import { useEffect } from "react";
+import Lenis from "lenis";
+import Navbar from "@/components/ui/Navbar";
 import Hero from "@/components/sections/Hero";
 import ExperienceBrief from "@/components/sections/ExperienceBrief";
 import AboutManifesto from "@/components/sections/AboutManifesto";
-import TechDNA from "@/components/sections/TechDNA";
 import ProjectGrid from "@/components/sections/ProjectGrid";
+import TechDNA from "@/components/sections/TechDNA";
 import Services from "@/components/sections/Services";
 import Footer from "@/components/sections/Footer";
 
 export default function Home() {
+  useEffect(() => {
+    // Initialize Lenis Smooth Scroll
+    const lenis = new Lenis();
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }, []);
+
   return (
-    <div className="bg-[#0a0a0a] min-h-screen selection:bg-white selection:text-black">
-      {/* 01. Identity & First Impression */}
-      <Hero />
+    <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
+      {/* Global Navigation */}
+      <Navbar />
 
-      {/* 02. The Connective Tissue (Socials & Quick Meta) */}
-      <ExperienceBrief />
+      <main>
+        {/* 01. Above the Fold: Identity */}
+        <Hero />
 
-      {/* 03. The Human Factor & Philosophy */}
-      <AboutManifesto />
+        {/* 02. The Social/Expertise Bridge */}
+        <ExperienceBrief />
 
-      {/* 04. Proof of Work (The 7 Selected Projects) */}
-      <ProjectGrid />
+        {/* 03. The Human Connection (About) */}
+        <AboutManifesto />
 
-      {/* 05. The Technical Rigor (Bento Grid Stack) */}
-      <TechDNA />
+        {/* 04. The Core Proof (Projects) */}
+        <ProjectGrid />
 
-      {/* 06. The Business Logic (Agency Services) */}
-      <Services />
+        {/* 05. Technical Authority (Tech Stack) */}
+        <TechDNA />
 
-      {/* 07. Final Footer / CTA */}
+        {/* 06. Strategic Offerings (Services) */}
+        <Services />
+      </main>
+
+      {/* 07. The Kinetic Closer */}
       <Footer />
     </div>
   );
