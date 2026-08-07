@@ -1,14 +1,15 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { SplitText } from "gsap/dist/SplitText";
-import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
-import { ScrambleTextPlugin } from "gsap/dist/ScrambleTextPlugin"; 
-import { ArrowUpRight, Github, Linkedin, Twitter, ArrowUp } from "lucide-react";
+import { ScrambleTextPlugin } from "gsap/dist/ScrambleTextPlugin";
+import { ArrowUpRight, Github, Linkedin, Instagram, ArrowUp } from "lucide-react";
+import { getLenis } from "@/lib/lenis";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, SplitText, ScrollToPlugin, ScrambleTextPlugin);
+  gsap.registerPlugin(ScrollTrigger, SplitText, ScrambleTextPlugin);
 }
 
 const footerLinks = {
@@ -19,11 +20,10 @@ const footerLinks = {
     { label: "Tech Stack", href: "#techstack" },
   ],
   socials: [
-    { name: "LinkedIn", icon: <Linkedin size={14} />, href: "#" },
-    { name: "GitHub",   icon: <Github   size={14} />, href: "#" },
-    { name: "Twitter",  icon: <Twitter  size={14} />, href: "#" },
+    { name: "LinkedIn",   icon: <Linkedin size={14} />,   href: "https://ug.linkedin.com/in/magero-kyayi-joshua" },
+    { name: "GitHub",     icon: <Github size={14} />,     href: "https://github.com/joshuakyayi256" },
+    { name: "Instagram",  icon: <Instagram size={14} />,  href: "https://www.instagram.com/josh_kyayi/" },
   ],
-  projects: ["Rentbetahouse", "Munno Ddala", "Envirian", "Soma"],
 };
 
 export default function Footer() {
@@ -31,6 +31,9 @@ export default function Footer() {
   const marqueeRef   = useRef<HTMLDivElement>(null);
   const ctaHeadRef   = useRef<HTMLHeadingElement>(null);
   const colRefs      = useRef<(HTMLDivElement | null)[]>([]);
+  const pathname     = usePathname();
+  const router       = useRouter();
+  const isHome       = pathname === "/";
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -90,7 +93,18 @@ export default function Footer() {
 
   // ScrollTo Top Function
   const handleScrollTop = () => {
-    gsap.to(window, { duration: 1.5, scrollTo: 0, ease: "power4.inOut" });
+    getLenis()?.scrollTo(0, { duration: 1.5 });
+  };
+
+  // Explore-link nav — redirects home first when off-page
+  const handleExploreClick = (href: string) => {
+    if (!isHome) {
+      router.push(`/${href}`);
+      return;
+    }
+    const el = document.getElementById(href.replace("#", ""));
+    if (!el) return;
+    getLenis()?.scrollTo(el, { offset: -80, duration: 1.5 });
   };
 
   // ScrambleText Hover Interaction
@@ -113,7 +127,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-20 gap-x-8 mb-32">
           
           {/* Left: Massive CTA */}
-          <div ref={(el) => { colRefs.current[0] = el; }} className="md:col-span-7 flex flex-col justify-between">
+          <div id="contact" ref={(el) => { colRefs.current[0] = el; }} className="md:col-span-7 flex flex-col justify-between scroll-mt-32">
             <div>
               <div className="flex items-center gap-4 mb-10">
                 <div className="w-8 h-px bg-white/20" />
@@ -151,7 +165,7 @@ export default function Footer() {
                 {footerLinks.navigation.map(({ label, href }) => (
                   <li key={label}>
                     <button
-                      onClick={() => gsap.to(window, { duration: 1.5, scrollTo: href, ease: "power4.inOut" })}
+                      onClick={() => handleExploreClick(href)}
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       onMouseEnter={(e) => handleScrambleHover(e as any, label)}
                       className="group font-sen text-sm text-white/60 hover:text-white transition-colors cursor-pointer flex items-center gap-2"
@@ -174,6 +188,8 @@ export default function Footer() {
                   <li key={social.name}>
                     <a
                       href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="group font-sen text-sm text-white/60 hover:text-white flex items-center gap-3 transition-colors"
                     >
                       <span className="p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
@@ -191,7 +207,7 @@ export default function Footer() {
         {/* ── META & BACK TO TOP ── */}
         <div ref={(el) => { colRefs.current[3] = el; }} className="border-t border-white/10 py-10 flex flex-col md:flex-row justify-between items-center gap-6">
           <div className="font-sen text-[10px] uppercase tracking-[0.3em] text-white/40">
-            © 2026 Magero Kyayi Joshua <span className="mx-4 hidden md:inline">|</span> Crafted with Next.js
+            © {new Date().getFullYear()} Magero Kyayi Joshua <span className="mx-4 hidden md:inline">|</span> Crafted with Next.js
           </div>
           
           <button 

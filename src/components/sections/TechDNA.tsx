@@ -69,7 +69,7 @@ function PillList({ items }: { items: string[] }) {
       {visible.map((item) => (
         <span
           key={item}
-          className="text-xs px-3 py-1.5 rounded-full border border-(--border-subtle)var(--bg-primary)] text-(--text-primary) opacity-90 font-sen"
+          className="text-xs px-3 py-1.5 rounded-full border border-(--border-subtle) text-(--text-primary) opacity-90 font-sen"
         >
           {item}
         </span>

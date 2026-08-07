@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { SplitText } from "gsap/dist/SplitText";
-import { Github, Linkedin, Globe, ArrowUpRight } from "lucide-react";
+import { Github, Linkedin, ArrowUpRight } from "lucide-react";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -27,9 +27,8 @@ const stats = [
 ];
 
 const socials = [
-  { icon: <Github   size={16} />, label: "GitHub",   href: "#" },
-  { icon: <Linkedin size={16} />, label: "LinkedIn",  href: "#" },
-  { icon: <Globe    size={16} />, label: "Portfolio", href: "#" },
+  { icon: <Github   size={16} />, label: "GitHub",   href: "https://github.com/joshuakyayi256" },
+  { icon: <Linkedin size={16} />, label: "LinkedIn",  href: "https://ug.linkedin.com/in/magero-kyayi-joshua" },
 ];
 
 export default function ExperienceBrief() {
@@ -208,6 +207,8 @@ export default function ExperienceBrief() {
                 <a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="social-item group flex items-center justify-between py-3 border-b transition-all duration-300"
                   style={{ borderColor: "var(--border-subtle)" }}
                   onMouseMove={handleSocialMove}

@@ -1,79 +1,28 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { SplitText } from "gsap/dist/SplitText";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, ImageOff } from "lucide-react";
+import { projects } from "@/data/projects";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
 }
 
-const projects = [
-  {
-    id: "01",
-    title: "Rentbetahouse",
-    category: "Property & Fintech",
-    desc: "Role-based rental platform with real-time listings and integrated payments.",
-    span: "lg:col-span-8",
-    tall: false,
-  },
-  {
-    id: "02",
-    title: "Munno Ddala SACCO",
-    category: "System Architecture",
-    desc: "Full savings & credit cooperative system with member dashboards.",
-    span: "lg:col-span-4",
-    tall: false,
-  },
-  {
-    id: "03",
-    title: "Green World Safaris",
-    category: "Travel & Tourism",
-    desc: "Immersive booking experience for East African safari packages.",
-    span: "lg:col-span-4",
-    tall: true,
-  },
-  {
-    id: "04",
-    title: "Hanker Homes Ltd",
-    category: "Real Estate Design",
-    desc: "Premium property showcase with 3D render integrations.",
-    span: "lg:col-span-4",
-    tall: true,
-  },
-  {
-    id: "05",
-    title: "Citie Photography",
-    category: "Visual Storytelling",
-    desc: "Editorial photography studio site with gallery and booking flow.",
-    span: "lg:col-span-4",
-    tall: true,
-  },
-  {
-    id: "06",
-    title: "Vivacity Aromatherapy",
-    category: "E-Commerce",
-    desc: "Wellness brand store with curated product experience.",
-    span: "lg:col-span-6",
-    tall: false,
-  },
-  {
-    id: "07",
-    title: "Inspirational Youth",
-    category: "Social Initiative",
-    desc: "Community platform connecting mentors with young professionals.",
-    span: "lg:col-span-6",
-    tall: false,
-  },
-];
+function initials(title: string) {
+  const words = title.split(" ").filter(Boolean);
+  if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
+  return words.map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+}
 
 export default function ProjectGrid() {
   const sectionRef  = useRef<HTMLElement>(null);
   const headingRef  = useRef<HTMLHeadingElement>(null);
   const eyebrowRef  = useRef<HTMLDivElement>(null);
   const metaRef     = useRef<HTMLDivElement>(null);
-  const cardRefs    = useRef<(HTMLDivElement | null)[]>([]);
+  const cardRefs    = useRef<(HTMLAnchorElement | null)[]>([]);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   useEffect(() => {
@@ -247,8 +196,9 @@ export default function ProjectGrid() {
         {/* ── ASYMMETRIC GRID ── */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4">
           {projects.map((project, i) => (
-            <div
-              key={project.id}
+            <Link
+              key={project.slug}
+              href={`/projects/${project.slug}`}
               ref={(el) => { cardRefs.current[i] = el; }}
               onMouseEnter={() => handleCardEnter(i)}
               onMouseLeave={() => handleCardLeave(i)}
@@ -261,16 +211,32 @@ export default function ProjectGrid() {
                 opacity: 0.97,
               }}
             >
-              {/* Image layer — placeholder tinted bg, swap for next/image */}
+              {/* Image layer — placeholder until real screenshots are added, swap for next/image */}
               <div
-                className="card-img absolute inset-0 w-full h-full"
+                className="card-img absolute inset-0 w-full h-full flex items-center justify-center"
                 style={{
                   background: `linear-gradient(135deg,
                     hsl(${(i * 37) % 360}, 8%, 10%) 0%,
                     hsl(${(i * 37 + 60) % 360}, 5%, 16%) 100%)`,
                   transformOrigin: "center",
                 }}
-              />
+              >
+                <div className="flex flex-col items-center gap-3 pointer-events-none select-none">
+                  <span
+                    className="font-satoshi font-black uppercase leading-none"
+                    style={{ fontSize: "clamp(3rem, 9vw, 7rem)", color: "rgba(255,255,255,0.06)" }}
+                  >
+                    {initials(project.title)}
+                  </span>
+                  <span
+                    className="flex items-center gap-2 font-satoshi text-[9px] uppercase tracking-[0.4em]"
+                    style={{ color: "rgba(255,255,255,0.12)" }}
+                  >
+                    <ImageOff size={12} strokeWidth={1.5} />
+                    Preview coming soon
+                  </span>
+                </div>
+              </div>
 
               {/* Gradient overlay */}
               <div
@@ -290,17 +256,30 @@ export default function ProjectGrid() {
                     className="font-satoshi font-black text-[9px] uppercase tracking-[0.5em]"
                     style={{ color: "rgba(255,255,255,0.35)" }}
                   >
-                    {project.id}
+                    {String(i + 1).padStart(2, "0")}
                   </span>
-                  <span
-                    className="font-satoshi text-[9px] uppercase tracking-[0.4em] px-3 py-1.5 rounded-full border"
-                    style={{
-                      borderColor: "rgba(255,255,255,0.15)",
-                      color: "rgba(255,255,255,0.5)",
-                    }}
-                  >
-                    {project.category}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {project.comingSoon && (
+                      <span
+                        className="font-satoshi text-[9px] uppercase tracking-[0.4em] px-3 py-1.5 rounded-full border"
+                        style={{
+                          borderColor: "rgba(255,255,255,0.15)",
+                          color: "rgba(255,255,255,0.5)",
+                        }}
+                      >
+                        Coming Soon
+                      </span>
+                    )}
+                    <span
+                      className="font-satoshi text-[9px] uppercase tracking-[0.4em] px-3 py-1.5 rounded-full border"
+                      style={{
+                        borderColor: "rgba(255,255,255,0.15)",
+                        color: "rgba(255,255,255,0.5)",
+                      }}
+                    >
+                      {project.category}
+                    </span>
+                  </div>
                 </div>
 
                 {/* Bottom — title + arrow */}
@@ -315,7 +294,7 @@ export default function ProjectGrid() {
                         transition: "opacity 0.4s ease, transform 0.4s ease",
                       }}
                     >
-                      {project.desc}
+                      {project.teaser}
                     </p>
                     <h3
                       className="font-satoshi font-black uppercase tracking-tight leading-none"
@@ -341,7 +320,7 @@ export default function ProjectGrid() {
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -349,8 +328,8 @@ export default function ProjectGrid() {
         <div
           className="mt-12 flex justify-end"
         >
-          <button
-            type="button"
+          <Link
+            href="/projects"
             className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border group flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
             style={{
               borderColor: "var(--border-subtle)",
@@ -371,7 +350,7 @@ export default function ProjectGrid() {
               size={14}
               className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
             />
-          </button>
+          </Link>
         </div>
 
       </div>

@@ -1,9 +1,11 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { Menu, X } from "lucide-react";
+import { getLenis } from "@/lib/lenis";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -17,6 +19,16 @@ const navLinks = [
   { label: "Contact",   href: "#contact" },
 ];
 
+/* ── Pages with a hardcoded background (opt out of the light/dark toggle) ──
+   need the navbar's own colors forced to match, since var(--text-primary)
+   would otherwise be computed from a theme the page itself isn't following. */
+function useNavVariant() {
+  const pathname = usePathname();
+  if (pathname === "/projects") return "dark" as const;
+  if (pathname?.startsWith("/projects/")) return "light" as const;
+  return "auto" as const;
+}
+
 export default function Navbar() {
   const navRef      = useRef<HTMLElement>(null);
   const logoRef     = useRef<HTMLAnchorElement>(null);
@@ -26,13 +38,26 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen]     = useState(false);
   const [scrolled, setScrolled]     = useState(false);
   const [activeSection, setActive]  = useState("");
+  const router   = useRouter();
+  const pathname = usePathname();
+  const variant  = useNavVariant();
+
+  const isHome = pathname === "/";
+
+  const text      = variant === "light" ? "#1d1d1f" : variant === "dark" ? "#ffffff" : "var(--text-primary)";
+  const border    = variant === "light" ? "rgba(0,0,0,0.1)" : variant === "dark" ? "rgba(255,255,255,0.1)" : "var(--border-subtle)";
+  const bgSolid   = variant === "light" ? "rgba(245,245,247,0.9)" : variant === "dark" ? "rgba(10,10,10,0.85)" : "color-mix(in srgb, var(--bg-primary) 85%, transparent)";
+  const bgTint4   = variant === "light" ? "rgba(0,0,0,0.04)" : variant === "dark" ? "rgba(255,255,255,0.04)" : "color-mix(in srgb, var(--text-primary) 4%, transparent)";
+  const bgTint8   = variant === "light" ? "rgba(0,0,0,0.08)" : variant === "dark" ? "rgba(255,255,255,0.08)" : "color-mix(in srgb, var(--text-primary) 8%, transparent)";
+
+  // Off-homepage, there's no hero to breathe against — always show a solid backdrop.
+  const showSolid = scrolled || !isHome;
 
   /* ── Entrance animation ──────────────────────────── */
   useEffect(() => {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ delay: 0.2 });
 
-      // Navbar slides down from above
       tl.from(navRef.current, {
         y: -80,
         opacity: 0,
@@ -40,7 +65,6 @@ export default function Navbar() {
         ease: "expo.out",
       });
 
-      // Logo chars stagger in
       tl.from(logoRef.current, {
         x: -20,
         opacity: 0,
@@ -48,7 +72,6 @@ export default function Navbar() {
         ease: "power3.out",
       }, "-=0.5");
 
-      // Nav links stagger in from top
       const linkEls = linksRef.current?.querySelectorAll(".nav-link");
       if (linkEls?.length) {
         tl.from(linkEls, {
@@ -60,7 +83,6 @@ export default function Navbar() {
         }, "-=0.4");
       }
 
-      // Badge slides in from right
       tl.from(badgeRef.current, {
         x: 20,
         opacity: 0,
@@ -73,13 +95,13 @@ export default function Navbar() {
     return () => ctx.revert();
   }, []);
 
-  /* ── Scroll: shrink + blur + active section ──────── */
+  /* ── Scroll: shrink + active section (homepage only) ─ */
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 60);
 
-      // Active section detection
+      if (!isHome) return;
       const sections = navLinks.map((l) => l.href.replace("#", ""));
       for (let i = sections.length - 1; i >= 0; i--) {
         const el = document.getElementById(sections[i]);
@@ -89,11 +111,12 @@ export default function Navbar() {
         }
       }
     };
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHome]);
 
-  /* ── GSAP scroll-based navbar styling ───────────── */
+  /* ── GSAP scroll-based navbar sizing ─────────────── */
   useEffect(() => {
     if (!navRef.current) return;
     gsap.to(navRef.current, {
@@ -124,17 +147,17 @@ export default function Navbar() {
     }
   }, [menuOpen]);
 
-  /* ── Smooth scroll handler ───────────────────────── */
+  /* ── Smooth scroll handler — redirects home first when off-page ── */
   const handleNavClick = (href: string) => {
     setMenuOpen(false);
-    const id  = href.replace("#", "");
-    const el  = document.getElementById(id);
+    const id = href.replace("#", "");
+    if (!isHome) {
+      router.push(`/#${id}`);
+      return;
+    }
+    const el = document.getElementById(id);
     if (!el) return;
-    gsap.to(window, {
-      scrollTo: { y: el, offsetY: 80 },
-      duration: 1.2,
-      ease: "power4.inOut",
-    });
+    getLenis()?.scrollTo(el, { offset: -80, duration: 1.2 });
   };
 
   return (
@@ -145,11 +168,9 @@ export default function Navbar() {
         style={{
           paddingTop: "28px",
           paddingBottom: "28px",
-          background: scrolled
-            ? "color-mix(in srgb, var(--bg-primary) 85%, transparent)"
-            : "transparent",
-          backdropFilter: scrolled ? "blur(16px) saturate(180%)" : "none",
-          borderBottom: scrolled ? "1px solid var(--border-subtle)" : "1px solid transparent",
+          background: showSolid ? bgSolid : "transparent",
+          backdropFilter: showSolid ? "blur(16px) saturate(180%)" : "none",
+          borderBottom: showSolid ? `1px solid ${border}` : "1px solid transparent",
         }}
       >
         <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -159,17 +180,17 @@ export default function Navbar() {
             ref={logoRef}
             href="/"
             className="font-satoshi font-black text-xl uppercase tracking-tighter transition-opacity duration-300 hover:opacity-70"
-            style={{ color: "var(--text-primary)" }}
+            style={{ color: text }}
           >
             Magero
-            <span style={{ color: "var(--text-primary)", opacity: 0.3 }}>.</span>
+            <span style={{ color: text, opacity: 0.3 }}>.</span>
           </Link>
 
           {/* Desktop links */}
           <div ref={linksRef} className="hidden md:flex items-center gap-1">
             {navLinks.map(({ label, href }) => {
               const id       = href.replace("#", "");
-              const isActive = activeSection === id;
+              const isActive = isHome && activeSection === id;
               return (
                 <button
                   key={label}
@@ -177,9 +198,9 @@ export default function Navbar() {
                   onClick={() => handleNavClick(href)}
                   className="nav-link relative font-satoshi font-black text-[9px] uppercase tracking-[0.45em] px-4 py-2 rounded-full transition-all duration-300"
                   style={{
-                    color: "var(--text-primary)",
+                    color: text,
                     opacity: isActive ? 1 : 0.45,
-                    background: isActive ? "color-mix(in srgb, var(--text-primary) 8%, transparent)" : "transparent",
+                    background: isActive ? bgTint8 : "transparent",
                   }}
                   onMouseEnter={(e) => {
                     if (!isActive) (e.currentTarget as HTMLElement).style.opacity = "0.85";
@@ -204,8 +225,8 @@ export default function Navbar() {
               ref={badgeRef}
               className="hidden sm:flex items-center gap-2.5 px-4 py-2 rounded-full border"
               style={{
-                borderColor: "var(--border-subtle)",
-                background: "color-mix(in srgb, var(--text-primary) 4%, transparent)",
+                borderColor: border,
+                background: bgTint4,
               }}
             >
               <span
@@ -218,7 +239,7 @@ export default function Navbar() {
               />
               <span
                 className="font-satoshi font-black text-[8px] uppercase tracking-[0.45em]"
-                style={{ color: "var(--text-primary)", opacity: 0.7 }}
+                style={{ color: text, opacity: 0.7 }}
               >
                 Available
               </span>
@@ -229,8 +250,8 @@ export default function Navbar() {
               type="button"
               className="md:hidden w-9 h-9 flex items-center justify-center rounded-full border transition-all duration-300"
               style={{
-                borderColor: "var(--border-subtle)",
-                color: "var(--text-primary)",
+                borderColor: border,
+                color: text,
               }}
               onClick={() => setMenuOpen((o) => !o)}
               aria-label="Toggle menu"
@@ -253,9 +274,9 @@ export default function Navbar() {
           opacity: 0,
           pointerEvents: "none",
           paddingTop: "100px",
-          background: "color-mix(in srgb, var(--bg-primary) 96%, transparent)",
+          background: bgSolid,
           backdropFilter: "blur(20px)",
-          borderBottom: "1px solid var(--border-subtle)",
+          borderBottom: `1px solid ${border}`,
         }}
       >
         <div className="px-6 pb-10 space-y-1">
@@ -265,23 +286,23 @@ export default function Navbar() {
               type="button"
               onClick={() => handleNavClick(href)}
               className="w-full text-left flex items-center justify-between py-5 border-b"
-              style={{ borderColor: "var(--border-subtle)" }}
+              style={{ borderColor: border }}
             >
               <div className="flex items-center gap-5">
                 <span
                   className="font-satoshi font-black text-[10px] tabular-nums"
-                  style={{ color: "var(--text-primary)", opacity: 0.25 }}
+                  style={{ color: text, opacity: 0.25 }}
                 >
                   0{i + 1}
                 </span>
                 <span
                   className="font-satoshi font-black text-2xl uppercase tracking-tighter"
-                  style={{ color: "var(--text-primary)" }}
+                  style={{ color: text }}
                 >
                   {label}
                 </span>
               </div>
-              <span style={{ color: "var(--text-primary)", opacity: 0.3 }}>↗</span>
+              <span style={{ color: text, opacity: 0.3 }}>↗</span>
             </button>
           ))}
         </div>

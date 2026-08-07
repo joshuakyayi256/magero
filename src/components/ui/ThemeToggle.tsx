@@ -11,13 +11,12 @@ export default function ThemeToggle() {
 
   /* ── Init theme from storage ─────────────────────── */
   useEffect(() => {
-    const raf = requestAnimationFrame(() => {
+    queueMicrotask(() => {
       setMounted(true);
       const saved = localStorage.getItem("theme") || "dark";
       setTheme(saved);
       document.documentElement.setAttribute("data-theme", saved);
     });
-    return () => cancelAnimationFrame(raf);
   }, []);
 
   /* ── Entrance animation (once mounted) ──────────── */
@@ -36,7 +35,13 @@ export default function ThemeToggle() {
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
 
-    // 1. Ripple burst
+    // Apply the real state change immediately — must not depend on
+    // animation timing/completion (GSAP's ticker can stall or be skipped).
+    setTheme(newTheme);
+    document.documentElement.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+
+    // 1. Ripple burst (cosmetic)
     if (rippleRef.current) {
       gsap.fromTo(rippleRef.current,
         { scale: 0, opacity: 0.3 },
@@ -44,24 +49,15 @@ export default function ThemeToggle() {
       );
     }
 
-    // 2. Icon swap — spin out, update, spin in
-    gsap.to(iconRef.current, {
-      rotateY: 90,
-      scale: 0.5,
-      duration: 0.2,
-      ease: "power2.in",
-      onComplete: () => {
-        setTheme(newTheme);
-        document.documentElement.setAttribute("data-theme", newTheme);
-        localStorage.setItem("theme", newTheme);
-        gsap.fromTo(iconRef.current,
-          { rotateY: -90, scale: 0.5 },
-          { rotateY: 0, scale: 1, duration: 0.35, ease: "back.out(2)" }
-        );
-      },
-    });
+    // 2. Icon spin-in (cosmetic — content already updated above)
+    if (iconRef.current) {
+      gsap.fromTo(iconRef.current,
+        { rotateY: -90, scale: 0.5 },
+        { rotateY: 0, scale: 1, duration: 0.35, ease: "back.out(2)" }
+      );
+    }
 
-    // 3. Button press feel
+    // 3. Button press feel (cosmetic)
     gsap.to(btnRef.current, {
       scale: 0.88,
       duration: 0.12,
