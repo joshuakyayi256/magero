@@ -24,7 +24,7 @@ export default function ProjectSlug({ params }: { params: Promise<{ slug: string
           <motion.h1 
             initial={{ y: 60, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
-            className="font-satoshi text-[12vw] md:text-[8vw] font-black leading-[0.85] uppercase tracking-tighter mb-16"
+            className="font-satoshi text-[9vw] md:text-[8vw] font-black leading-[0.85] uppercase tracking-tighter mb-16 break-words"
           >
             {project.title}<span className="text-black/10">.</span>
           </motion.h1>

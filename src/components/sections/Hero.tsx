@@ -4,19 +4,14 @@ import gsap from "gsap";
 import { SplitText } from "gsap/dist/SplitText";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
+import { getLenis } from "@/lib/lenis";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(SplitText, ScrollTrigger);
 }
 
 /* ─── Specialties that cycle in the headline ──────── */
-const SPECIALTIES = [
-  { line1: "Product",  line2: "Builder."    },
-  { line1: "Systems",  line2: "Architect."  },
-  { line1: "UX",       line2: "Engineer."   },
-  { line1: "Digital",  line2: "Strategist." },
-  { line1: "Tech",     line2: "Founder."    },
-];
+const SPECIALTIES = ["Founder.", "Engineer.", "Architect.", "Builder."];
 
 /* ─── Character scramble helper ──────────────────── */
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&";
@@ -43,7 +38,6 @@ export default function Hero() {
   const sectionRef   = useRef<HTMLElement>(null);
   const eyebrowRef   = useRef<HTMLSpanElement>(null);
   const line1Ref     = useRef<HTMLSpanElement>(null);
-  const line2Ref     = useRef<HTMLSpanElement>(null);
   const subRef       = useRef<HTMLParagraphElement>(null);
   const ctaRef       = useRef<HTMLButtonElement>(null);
   const ctaSecRef    = useRef<HTMLButtonElement>(null);
@@ -81,9 +75,9 @@ export default function Hero() {
       }
 
       // Headline entrance
-      gsap.fromTo([line1Ref.current, line2Ref.current],
+      gsap.fromTo(line1Ref.current,
         { yPercent: 110, opacity: 0, rotateX: -14 },
-        { yPercent: 0, opacity: 1, rotateX: 0, stagger: 0.1, duration: 1.1, ease: "expo.out", delay: 0.7 }
+        { yPercent: 0, opacity: 1, rotateX: 0, duration: 1.1, ease: "expo.out", delay: 0.7 }
       );
 
       gsap.fromTo(subRef.current,
@@ -115,7 +109,7 @@ export default function Hero() {
       );
 
       // Scroll parallax
-      gsap.to([line1Ref.current, line2Ref.current], {
+      gsap.to(line1Ref.current, {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
@@ -138,33 +132,28 @@ export default function Hero() {
       const nextIdx = (indexRef.current + 1) % SPECIALTIES.length;
       const next    = SPECIALTIES[nextIdx];
       const l1      = line1Ref.current;
-      const l2      = line2Ref.current;
-      if (!l1 || !l2) return;
+      if (!l1) return;
 
-      // Slide both lines out upward
-      gsap.to([l1, l2], {
+      // Slide line out upward
+      gsap.to(l1, {
         yPercent: -115,
         opacity: 0,
         rotateX: 12,
-        stagger: 0.06,
         duration: 0.4,
         ease: "power3.in",
         onComplete: () => {
           indexRef.current = nextIdx;
           setSpecIdx(nextIdx);
-          gsap.set([l1, l2], { yPercent: 110, rotateX: -12 });
+          gsap.set(l1, { yPercent: 110, rotateX: -12 });
 
           // Scramble then resolve
-          scrambleTo(l1, next.line1.toUpperCase(), 0.45, () => {
-            scrambleTo(l2, next.line2.toUpperCase(), 0.55);
-          });
+          scrambleTo(l1, next.toUpperCase(), 0.5);
 
           // Slide back in
-          gsap.to([l1, l2], {
+          gsap.to(l1, {
             yPercent: 0,
             opacity: 1,
             rotateX: 0,
-            stagger: 0.08,
             duration: 0.75,
             ease: "expo.out",
             delay: 0.05,
@@ -208,6 +197,12 @@ export default function Hero() {
     gsap.to(ref.current, { x: 0, y: 0, scale: 1, duration: 0.65, ease: "elastic.out(1, 0.45)" });
   };
 
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    getLenis()?.scrollTo(el, { offset: -80, duration: 1.2 });
+  };
+
   return (
     <section
       ref={sectionRef}
@@ -239,7 +234,7 @@ export default function Hero() {
 
         <span ref={eyebrowRef} className="font-sen uppercase tracking-[0.45em] text-xs block mb-6"
           style={{ color: "var(--text-primary)", opacity: 0.45 }}>
-          Based in Central Province, Uganda
+          Based in Kampala, Uganda
         </span>
 
         {/* Headline */}
@@ -247,17 +242,9 @@ export default function Hero() {
           <div className="overflow-hidden">
             <span ref={line1Ref}
               className="font-satoshi font-black uppercase tracking-tighter leading-[0.88] block"
-              style={{ fontSize: "clamp(3.5rem, 11vw, 10.5rem)", color: "var(--text-primary)" }}
+              style={{ fontSize: "clamp(2.25rem, 11vw, 10.5rem)", color: "var(--text-primary)" }}
             >
-              {SPECIALTIES[0].line1.toUpperCase()}
-            </span>
-          </div>
-          <div className="overflow-hidden">
-            <span ref={line2Ref}
-              className="font-satoshi font-black uppercase tracking-tighter leading-[0.88] block"
-              style={{ fontSize: "clamp(3.5rem, 11vw, 10.5rem)", color: "var(--text-primary)", opacity: 0.18 }}
-            >
-              {SPECIALTIES[0].line2.toUpperCase()}
+              {SPECIALTIES[0].toUpperCase()}
             </span>
           </div>
         </div>
@@ -270,7 +257,7 @@ export default function Hero() {
             {/* Specialty indicator pills */}
             <div ref={taglineRef} className="flex flex-wrap gap-2">
               {SPECIALTIES.map((s, i) => (
-                <span key={s.line2}
+                <span key={s}
                   className="font-satoshi font-black text-[8px] uppercase tracking-[0.4em] px-3 py-1.5 rounded-full border transition-all duration-500"
                   style={{
                     borderColor: i === specIdx ? "color-mix(in srgb, var(--text-primary) 40%, transparent)" : "var(--border-subtle)",
@@ -279,7 +266,7 @@ export default function Hero() {
                     background: i === specIdx ? "color-mix(in srgb, var(--text-primary) 8%, transparent)" : "transparent",
                   }}
                 >
-                  {s.line1} {s.line2}
+                  {s}
                 </span>
               ))}
             </div>
@@ -287,7 +274,7 @@ export default function Hero() {
             {/* Manifesto line — short, punchy, not duplicated below */}
             <p ref={subRef} className="font-sen text-base md:text-lg leading-relaxed"
               style={{ color: "var(--text-primary)", opacity: 0.55 }}>
-              Engineering · Design · Strategy — rare in one person.
+              Institutional-grade systems — insurance, edtech, fintech — built for East African conditions.
             </p>
           </div>
 
@@ -300,7 +287,7 @@ export default function Hero() {
               </p>
               <p className="font-sen text-sm leading-snug"
                 style={{ color: "var(--text-primary)", opacity: 0.65 }}>
-                Building products & scaling brands<br />from Central Province, Uganda.
+                Building digital infrastructure<br />for East African institutions.
               </p>
             </div>
             <div className="stat-item flex items-center gap-2.5">
@@ -316,6 +303,7 @@ export default function Hero() {
           {/* Right: CTAs ── */}
           <div className="lg:col-span-3 flex flex-col gap-3 items-start lg:items-end">
             <button ref={ctaRef} type="button"
+              onClick={() => scrollToSection("contact")}
               onMouseMove={(e) => magneticMove(e, ctaRef)}
               onMouseLeave={() => magneticLeave(ctaRef)}
               className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full flex items-center gap-3 group"
@@ -326,6 +314,7 @@ export default function Hero() {
             </button>
 
             <button ref={ctaSecRef} type="button"
+              onClick={() => scrollToSection("works")}
               onMouseMove={(e) => magneticMove(e, ctaSecRef)}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.background = "color-mix(in srgb, var(--text-primary) 6%, transparent)";

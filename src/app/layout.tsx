@@ -20,8 +20,8 @@ const sen = Urbanist({
 });
 
 export const metadata: Metadata = {
-  title: "Magero Kyayi Joshua | Software Engineer & Digital Strategist",
-  description: "Architecting scalable systems and authority-based digital growth strategies.",
+  title: "Magero Kyayi Joshua | Founder, Digital Infrastructure for East African Institutions",
+  description: "Founder of Soma & Synsify. Building institutional-grade systems — insurance, edtech, fintech — for East African conditions.",
 };
 
 export default function RootLayout({

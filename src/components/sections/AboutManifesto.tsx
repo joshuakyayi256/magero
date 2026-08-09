@@ -232,7 +232,7 @@ export default function AboutManifesto() {
                   className="font-sen text-xs mt-1"
                   style={{ color: "rgba(255,255,255,0.4)" }}
                 >
-                  Software Engineer · Uganda
+                  Founder, Soma & Synsify · Uganda
                 </p>
               </div>
             </div>
@@ -293,12 +293,15 @@ export default function AboutManifesto() {
                   opacity: 0.7,
                 }}
               >
-                With years of experience grounding technical solutions in{" "}
+                Consulting as an{" "}
                 <strong style={{ color: "var(--text-primary)", opacity: 1, fontWeight: 700 }}>
-                  Information Systems logic
-                </strong>
-                , I build digital products that bridge the gap between complex
-                engineering and market-ready strategy.
+                  Information Systems Consultant
+                </strong>{" "}
+                at MUA Insurance, a regulated insurer, gives me a rare
+                vantage point: I see how African institutions actually
+                operate under real compliance and infrastructure
+                constraints, then build the systems that let them operate
+                better.
               </p>
 
               <p
@@ -310,16 +313,17 @@ export default function AboutManifesto() {
                   opacity: 0.7,
                 }}
               >
-                From architecting the core of{" "}
+                I&apos;m the founder of{" "}
                 <strong style={{ color: "var(--text-primary)", opacity: 1, fontWeight: 700 }}>
                   Soma
                 </strong>{" "}
-                to leading the digital growth of{" "}
+                and{" "}
                 <strong style={{ color: "var(--text-primary)", opacity: 1, fontWeight: 700 }}>
-                  Synsify Studio
+                  Synsify
                 </strong>
-                , my focus remains constant: clarity, performance, and helping
-                teams move forward with confidence.
+                , built on the same belief: the systems powering education,
+                finance, and healthcare across East Africa deserve the same
+                rigor as anywhere else.
               </p>
             </div>
 
@@ -330,7 +334,7 @@ export default function AboutManifesto() {
               style={{ borderColor: "var(--border-subtle)" }}
             >
               <div className="flex flex-wrap gap-3">
-                {["Makerere University", "BSc. Information Systems", "Software Engineer"].map((tag) => (
+                {["Founder, Soma & Synsify", "Information Systems Consultant, MUA", "BSc. Information Systems, Makerere University"].map((tag) => (
                   <span
                     key={tag}
                     className="font-satoshi font-black text-[9px] uppercase tracking-[0.4em] px-3 py-2 rounded-full border"

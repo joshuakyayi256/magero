@@ -14,6 +14,7 @@ if (typeof window !== "undefined") {
 const navLinks = [
   { label: "Works",     href: "#works" },
   { label: "About",     href: "#about" },
+  { label: "Ventures",  href: "#ventures" },
   { label: "Services",  href: "#services" },
   { label: "Tech",      href: "#techstack" },
   { label: "Contact",   href: "#contact" },
@@ -248,7 +249,7 @@ export default function Navbar() {
             {/* Mobile hamburger */}
             <button
               type="button"
-              className="md:hidden w-9 h-9 flex items-center justify-center rounded-full border transition-all duration-300"
+              className="md:hidden w-11 h-11 flex items-center justify-center rounded-full border transition-all duration-300"
               style={{
                 borderColor: border,
                 color: text,

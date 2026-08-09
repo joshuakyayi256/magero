@@ -2,11 +2,11 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/dist/ScrollToPlugin";
 import { Plus, Minus, Code2, Database, BarChart4, Cpu } from "lucide-react";
+import { getLenis } from "@/lib/lenis";
 
 if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  gsap.registerPlugin(ScrollTrigger);
 }
 
 const stack = [
@@ -201,7 +201,7 @@ export default function TechDNA() {
               ref={headingRef}
               className="font-satoshi font-black uppercase tracking-tighter leading-[0.88]"
               style={{
-                fontSize: "clamp(3.5rem, 11vw, 10rem)",
+                fontSize: "clamp(2.25rem, 11vw, 10rem)",
                 color: "var(--text-primary)",
               }}
             >
@@ -341,6 +341,10 @@ export default function TechDNA() {
         <div ref={ctaRef} className="mt-16">
           <button
             type="button"
+            onClick={() => {
+              const el = document.getElementById("contact");
+              if (el) getLenis()?.scrollTo(el, { offset: -80, duration: 1.2 });
+            }}
             className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border transition-all duration-300 hover:scale-105 active:scale-95"
             style={{
               borderColor: "var(--border-subtle)",

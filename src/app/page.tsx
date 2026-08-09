@@ -4,6 +4,7 @@ import { getLenis } from "@/lib/lenis";
 import Hero from "@/components/sections/Hero";
 import ExperienceBrief from "@/components/sections/ExperienceBrief";
 import AboutManifesto from "@/components/sections/AboutManifesto";
+import Ventures from "@/components/sections/Ventures";
 import ProjectGrid from "@/components/sections/ProjectGrid";
 import TechDNA from "@/components/sections/TechDNA";
 import Services from "@/components/sections/Services";
@@ -34,13 +35,16 @@ export default function Home() {
         {/* 03. The Human Connection (About) */}
         <AboutManifesto />
 
-        {/* 04. The Core Proof (Projects) */}
+        {/* 04. Founder Identity (Ventures) */}
+        <Ventures />
+
+        {/* 05. The Core Proof (Client Work) */}
         <ProjectGrid />
 
-        {/* 05. Technical Authority (Tech Stack) */}
+        {/* 06. Technical Authority (Tech Stack) */}
         <TechDNA />
 
-        {/* 06. Strategic Offerings (Services) */}
+        {/* 07. Strategic Offerings (Services) */}
         <Services />
       </main>
     </div>

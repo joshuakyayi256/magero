@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { SplitText } from "gsap/dist/SplitText";
 import { ArrowUpRight, Zap, BarChart3, Globe } from "lucide-react";
+import { getLenis } from "@/lib/lenis";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -244,7 +245,7 @@ export default function Services() {
               ref={headingRef}
               className="font-satoshi font-black uppercase tracking-tighter leading-[0.88]"
               style={{
-                fontSize: "clamp(3.2rem, 10vw, 9.5rem)",
+                fontSize: "clamp(2.25rem, 10vw, 9.5rem)",
                 color: "var(--text-primary)",
                 perspective: "800px",
               }}
@@ -428,6 +429,10 @@ export default function Services() {
           </p>
           <button
             type="button"
+            onClick={() => {
+              const el = document.getElementById("contact");
+              if (el) getLenis()?.scrollTo(el, { offset: -80, duration: 1.2 });
+            }}
             className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border shrink-0 transition-all duration-300 hover:scale-105 active:scale-95 group flex items-center gap-3"
             style={{
               borderColor: "var(--border-subtle)",

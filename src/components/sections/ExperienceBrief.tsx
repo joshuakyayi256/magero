@@ -263,14 +263,16 @@ export default function ExperienceBrief() {
             >
               My work spans the architecture of{" "}
               <strong style={{ color: "var(--text-primary)", opacity: 1, fontWeight: 700 }}>
-                scalable web platforms
+                institutional-grade systems
               </strong>
-              , enterprise-grade systems, and data-driven dashboards. I specialise in
-              bridging the gap between high-end UX design and seamless{" "}
+              {" "}— role-based financial platforms, admissions infrastructure,
+              data-driven dashboards — built for the conditions East African
+              organisations actually operate in. I specialise in bridging
+              institutional insight with{" "}
               <strong style={{ color: "var(--text-primary)", opacity: 1, fontWeight: 700 }}>
-                back-end integration
+                production-grade engineering
               </strong>
-              , ensuring every product is as performant as it is visually authoritative.
+              , so every system holds up under real-world use.
             </p>
 
             {/* Divider */}

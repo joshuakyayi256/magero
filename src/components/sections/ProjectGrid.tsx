@@ -168,7 +168,7 @@ export default function ProjectGrid() {
               ref={headingRef}
               className="font-satoshi font-black uppercase tracking-tighter leading-[0.88]"
               style={{
-                fontSize: "clamp(3.2rem, 10vw, 9.5rem)",
+                fontSize: "clamp(2.25rem, 10vw, 9.5rem)",
                 color: "var(--text-primary)",
                 perspective: "800px",
               }}

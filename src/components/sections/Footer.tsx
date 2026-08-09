@@ -16,6 +16,7 @@ const footerLinks = {
   navigation: [
     { label: "Works",      href: "#works" },
     { label: "About",      href: "#about" },
+    { label: "Ventures",   href: "#ventures" },
     { label: "Services",   href: "#services" },
     { label: "Tech Stack", href: "#techstack" },
   ],
@@ -136,13 +137,18 @@ export default function Footer() {
                 </span>
               </div>
 
-              <h3 ref={ctaHeadRef} className="font-satoshi font-black uppercase tracking-tighter leading-[0.85] mb-12 text-[clamp(3.5rem,8vw,7rem)]">
+              <h3 ref={ctaHeadRef} className="font-satoshi font-black uppercase tracking-tighter leading-[0.85] mb-8 text-[clamp(2.25rem,8vw,7rem)]">
                 Let us build<br />
                 <span className="text-white/20">the future.</span>
               </h3>
 
+              <p className="font-sen text-base md:text-lg text-white/50 max-w-lg mb-10 leading-relaxed">
+                Building infrastructure for an African institution, or investing in
+                East African edtech/fintech? Let&apos;s talk.
+              </p>
+
               <a
-                href="mailto:magerokyayijoshua@gmail.com"
+                href="mailto:kyayijoshua@gmail.com"
                 className="group relative inline-flex items-center gap-4 px-10 py-6 rounded-full font-satoshi font-bold uppercase text-sm bg-white text-black overflow-hidden hover:scale-105 active:scale-95 transition-all duration-500"
               >
                 <span className="relative z-10 flex items-center gap-2">
@@ -168,7 +174,7 @@ export default function Footer() {
                       onClick={() => handleExploreClick(href)}
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
                       onMouseEnter={(e) => handleScrambleHover(e as any, label)}
-                      className="group font-sen text-sm text-white/60 hover:text-white transition-colors cursor-pointer flex items-center gap-2"
+                      className="group font-sen text-sm text-white/60 hover:text-white transition-colors cursor-pointer flex items-center gap-2 py-3 -my-3"
                     >
                       <span className="w-1.5 h-1.5 rounded-full bg-white/0 group-hover:bg-white/40 transition-colors" />
                       <span className="scramble-target">{label}</span>
@@ -190,7 +196,7 @@ export default function Footer() {
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group font-sen text-sm text-white/60 hover:text-white flex items-center gap-3 transition-colors"
+                      className="group font-sen text-sm text-white/60 hover:text-white flex items-center gap-3 transition-colors py-3 -my-3"
                     >
                       <span className="p-2 rounded-full bg-white/5 group-hover:bg-white/10 transition-colors">
                         {social.icon}
@@ -212,7 +218,7 @@ export default function Footer() {
           
           <button 
             onClick={handleScrollTop}
-            className="group flex items-center gap-3 font-satoshi text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 hover:text-white transition-colors"
+            className="group flex items-center gap-3 font-satoshi text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 hover:text-white transition-colors py-2 -my-2"
           >
             Back to top
             <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
