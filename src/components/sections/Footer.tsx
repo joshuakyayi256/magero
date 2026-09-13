@@ -60,8 +60,8 @@ export default function Footer() {
           scrollTrigger: { trigger: footerRef.current, start: "top 75%" },
           y: 60,
           opacity: 0,
-          duration: 1.2,
-          ease: "back.out(1.2)",
+          duration: 1,
+          ease: "power3.out",
           delay: 0.1 * i,
         });
       });
@@ -137,10 +137,10 @@ export default function Footer() {
                 </span>
               </div>
 
-              <h3 ref={ctaHeadRef} className="font-satoshi font-black uppercase tracking-tighter leading-[0.85] mb-8 text-[clamp(2.25rem,8vw,7rem)]">
+              <h2 ref={ctaHeadRef} className="font-satoshi font-black uppercase tracking-tighter leading-[0.85] mb-8 text-[clamp(2.25rem,8vw,7rem)]">
                 Let us build<br />
                 <span className="text-white/20">the future.</span>
-              </h3>
+              </h2>
 
               <p className="font-sen text-base md:text-lg text-white/50 max-w-lg mb-10 leading-relaxed">
                 Building infrastructure for an African institution, or investing in
@@ -149,7 +149,7 @@ export default function Footer() {
 
               <a
                 href="mailto:kyayijoshua@gmail.com"
-                className="group relative inline-flex items-center gap-4 px-10 py-6 rounded-full font-satoshi font-bold uppercase text-sm bg-white text-black overflow-hidden hover:scale-105 active:scale-95 transition-all duration-500"
+                className="group relative inline-flex items-center gap-4 px-10 py-6 rounded-full font-satoshi font-bold uppercase text-sm bg-white text-black overflow-hidden hover:scale-105 active:scale-95 transition-transform duration-500"
               >
                 <span className="relative z-10 flex items-center gap-2">
                   Start a conversation 
@@ -221,7 +221,7 @@ export default function Footer() {
             className="group flex items-center gap-3 font-satoshi text-[10px] uppercase tracking-[0.3em] font-bold text-white/40 hover:text-white transition-colors py-2 -my-2"
           >
             Back to top
-            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all duration-300">
+            <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors duration-300">
               <ArrowUp size={12} />
             </div>
           </button>

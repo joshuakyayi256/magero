@@ -69,7 +69,7 @@ export default function ProjectGrid() {
         delay: 0.4,
       });
 
-      // 4. Cards — stagger with back.out inertia, alternating directions
+      // 4. Cards — stagger fade-up, alternating directions
       cardRefs.current.filter(Boolean).forEach((card, i) => {
         const fromLeft = i % 2 === 0;
         gsap.from(card, {
@@ -77,8 +77,8 @@ export default function ProjectGrid() {
           x: fromLeft ? -30 : 30,
           y: 50,
           opacity: 0,
-          duration: 1,
-          ease: "back.out(1.3)",
+          duration: 0.9,
+          ease: "power3.out",
           delay: 0.1 + i * 0.08,
         });
       });
@@ -286,7 +286,7 @@ export default function ProjectGrid() {
                 <div className="flex items-end justify-between gap-4">
                   <div>
                     <p
-                      className="font-sen text-xs leading-relaxed mb-3 max-w-50 transition-all duration-500"
+                      className="font-sen text-xs leading-relaxed mb-3 max-w-50"
                       style={{
                         color: "rgba(255,255,255,0.5)",
                         opacity: hoveredIdx === i ? 1 : 0,
@@ -309,7 +309,7 @@ export default function ProjectGrid() {
 
                   {/* Arrow button */}
                   <div
-                    className="card-arrow shrink-0 w-11 h-11 rounded-full border flex items-center justify-center transition-all duration-500"
+                    className="card-arrow shrink-0 w-11 h-11 rounded-full border flex items-center justify-center transition-[background-color,border-color,color] duration-500"
                     style={{
                       borderColor: hoveredIdx === i ? "rgba(255,255,255,0.8)" : "rgba(255,255,255,0.2)",
                       background: hoveredIdx === i ? "rgba(255,255,255,1)" : "transparent",
@@ -330,7 +330,7 @@ export default function ProjectGrid() {
         >
           <Link
             href="/projects"
-            className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border group flex items-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95"
+            className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border group flex items-center gap-3 transition-[background-color,color,transform] duration-300 hover:scale-105 active:scale-95"
             style={{
               borderColor: "var(--border-subtle)",
               color: "var(--text-primary)",

@@ -271,7 +271,7 @@ export default function TechDNA() {
 
                   {/* Toggle icon */}
                   <span
-                    className="w-9 h-9 rounded-full border flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-110"
+                    className="w-9 h-9 rounded-full border flex items-center justify-center shrink-0 transition-[border-color,color,opacity,transform] duration-300 group-hover:scale-110"
                     style={{
                       borderColor: "var(--border-subtle)",
                       color: "var(--text-primary)",
@@ -287,7 +287,7 @@ export default function TechDNA() {
 
                 {/* ── EXPANDED CONTENT ── */}
                 <div
-                  className="overflow-hidden transition-all duration-500"
+                  className="overflow-hidden transition-[max-height,opacity] duration-500"
                   style={{
                     maxHeight: isOpen ? "500px" : "0px",
                     opacity: isOpen ? 1 : 0,
@@ -345,7 +345,7 @@ export default function TechDNA() {
               const el = document.getElementById("contact");
               if (el) getLenis()?.scrollTo(el, { offset: -80, duration: 1.2 });
             }}
-            className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border transition-all duration-300 hover:scale-105 active:scale-95"
+            className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border transition-[background-color,color,transform] duration-300 hover:scale-105 active:scale-95"
             style={{
               borderColor: "var(--border-subtle)",
               color: "var(--text-primary)",

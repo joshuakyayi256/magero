@@ -21,14 +21,14 @@ export default function ProjectsIndex() {
           {projects.map((project, i) => (
             <Link key={project.slug} href={`/projects/${project.slug}`}>
               <motion.div
-                whileHover={{ x: 20 }}
-                className="group border-b border-white/5 py-10 flex flex-col md:flex-row md:items-center justify-between transition-all"
+                whileHover={{ transform: "translateX(20px)" }}
+                className="group border-b border-white/5 py-10 flex flex-col md:flex-row md:items-center justify-between"
               >
-                <div className="flex items-center gap-8">
-                  <span className="font-satoshi text-white/20 text-xl font-bold">
+                <div className="flex items-center gap-4 md:gap-8 min-w-0">
+                  <span className="font-satoshi text-white/20 text-xl font-bold shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h2 className="font-satoshi text-4xl md:text-6xl font-black uppercase text-white group-hover:text-white/60 transition-colors">
+                  <h2 className="font-satoshi text-2xl sm:text-4xl md:text-6xl font-black uppercase text-white group-hover:text-white/60 transition-colors break-words min-w-0">
                     {project.title}
                   </h2>
                 </div>
@@ -42,7 +42,7 @@ export default function ProjectsIndex() {
                   <span className="font-sen text-sm uppercase tracking-[0.2em] text-white/40">
                     {project.category}
                   </span>
-                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-all">
+                  <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center group-hover:bg-white group-hover:text-black transition-colors">
                     <ArrowUpRight size={20} />
                   </div>
                 </div>
