@@ -23,7 +23,7 @@ export default function ThemeToggle() {
   useEffect(() => {
     if (!mounted || !btnRef.current) return;
     gsap.from(btnRef.current, {
-      scale: 0,
+      scale: 0.9,
       opacity: 0,
       duration: 0.6,
       ease: "back.out(2)",

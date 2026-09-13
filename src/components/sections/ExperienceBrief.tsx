@@ -83,8 +83,8 @@ export default function ExperienceBrief() {
           y: 30,
           opacity: 0,
           stagger: 0.12,
-          duration: 0.9,
-          ease: "back.out(1.6)",
+          duration: 0.8,
+          ease: "power3.out",
           delay: 0.15,
         });
       }
@@ -110,7 +110,7 @@ export default function ExperienceBrief() {
         });
       }
 
-      // 6. Skill pills — stagger with back.out inertia
+      // 6. Skill pills — stagger fade-up
       const pills = pillsRef.current?.querySelectorAll(".skill-pill");
       if (pills?.length) {
         gsap.from(pills, {
@@ -119,8 +119,8 @@ export default function ExperienceBrief() {
           opacity: 0,
           scale: 0.92,
           stagger: 0.05,
-          duration: 0.7,
-          ease: "back.out(1.5)",
+          duration: 0.6,
+          ease: "power3.out",
           delay: 0.3,
         });
       }
@@ -213,7 +213,7 @@ export default function ExperienceBrief() {
                   href={href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="social-item group flex items-center justify-between py-3 border-b transition-all duration-300"
+                  className="social-item group flex items-center justify-between py-3 border-b transition-colors duration-300"
                   style={{ borderColor: "var(--border-subtle)" }}
                   onMouseMove={handleSocialMove}
                   onMouseLeave={handleSocialLeave}
@@ -227,7 +227,7 @@ export default function ExperienceBrief() {
                       {icon}
                     </span>
                     <span
-                      className="font-sen text-sm transition-all duration-300 group-hover:opacity-100"
+                      className="font-sen text-sm transition-opacity duration-300 group-hover:opacity-100"
                       style={{ color: "var(--text-primary)", opacity: 0.6 }}
                     >
                       {label}
@@ -235,7 +235,7 @@ export default function ExperienceBrief() {
                   </div>
                   <ArrowUpRight
                     size={13}
-                    className="transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
                     style={{ color: "var(--text-primary)", opacity: 0.2 }}
                   />
                 </a>
@@ -297,7 +297,7 @@ export default function ExperienceBrief() {
                 {skills.map((skill) => (
                   <span
                     key={skill}
-                    className="skill-pill font-satoshi text-[10px] uppercase tracking-[0.4em] px-4 py-2.5 rounded-full border cursor-default transition-all duration-300"
+                    className="skill-pill font-satoshi text-[10px] uppercase tracking-[0.4em] px-4 py-2.5 rounded-full border cursor-default transition-opacity duration-300"
                     style={{
                       borderColor: "var(--border-subtle)",
                       color: "var(--text-primary)",

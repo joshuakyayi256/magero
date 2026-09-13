@@ -142,8 +142,8 @@ export default function Navbar() {
         yPercent: -8,
         opacity: 0,
         pointerEvents: "none",
-        duration: 0.35,
-        ease: "power3.in",
+        duration: 0.25,
+        ease: "power2.out",
       });
     }
   }, [menuOpen]);
@@ -197,7 +197,7 @@ export default function Navbar() {
                   key={label}
                   type="button"
                   onClick={() => handleNavClick(href)}
-                  className="nav-link relative font-satoshi font-black text-[9px] uppercase tracking-[0.45em] px-4 py-2 rounded-full transition-all duration-300"
+                  className="nav-link relative font-satoshi font-black text-[9px] uppercase tracking-[0.45em] px-4 py-2 rounded-full transition-[color,background-color,opacity] duration-300"
                   style={{
                     color: text,
                     opacity: isActive ? 1 : 0.45,
@@ -209,8 +209,10 @@ export default function Navbar() {
                   }}
                   onMouseLeave={(e) => {
                     if (!isActive) (e.currentTarget as HTMLElement).style.opacity = "0.45";
-                    gsap.to(e.currentTarget, { y: 0, duration: 0.4, ease: "elastic.out(1, 0.5)" });
+                    gsap.to(e.currentTarget, { y: 0, scale: 1, duration: 0.4, ease: "elastic.out(1, 0.5)" });
                   }}
+                  onMouseDown={(e) => gsap.to(e.currentTarget, { scale: 0.94, duration: 0.1, ease: "power2.out" })}
+                  onMouseUp={(e) => gsap.to(e.currentTarget, { scale: 1, duration: 0.3, ease: "power2.out" })}
                 >
                   {label}
                 </button>
@@ -249,7 +251,7 @@ export default function Navbar() {
             {/* Mobile hamburger */}
             <button
               type="button"
-              className="md:hidden w-11 h-11 flex items-center justify-center rounded-full border transition-all duration-300"
+              className="md:hidden w-11 h-11 flex items-center justify-center rounded-full border transition-colors duration-300"
               style={{
                 borderColor: border,
                 color: text,

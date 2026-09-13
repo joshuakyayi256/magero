@@ -59,8 +59,8 @@ function VerbTicker() {
       gsap.to(el, {
         yPercent: -110,
         opacity: 0,
-        duration: 0.45,
-        ease: "power3.in",
+        duration: 0.4,
+        ease: "power2.out",
         onComplete: () => {
           indexRef.current = (indexRef.current + 1) % TICKER_WORDS.length;
           el.textContent = next;
@@ -148,14 +148,14 @@ export default function Services() {
         delay: 0.35,
       });
 
-      // 4. Cards — staggered with inertia-style overshoot
+      // 4. Cards — staggered fade-up
       cardRefs.current.filter(Boolean).forEach((card, i) => {
         gsap.from(card, {
           scrollTrigger: { trigger: sectionRef.current, start: "top 62%" },
           y: 70,
           opacity: 0,
-          duration: 1.1,
-          ease: "back.out(1.4)",   // inertia overshoot
+          duration: 1,
+          ease: "power3.out",
           delay: 0.15 + i * 0.12,
         });
       });
@@ -322,7 +322,7 @@ export default function Services() {
                       {svc.number}
                     </span>
                     <span
-                      className="p-2.5 rounded-xl border transition-all duration-500"
+                      className="p-2.5 rounded-xl border transition-[border-color,color,opacity] duration-500"
                       style={{
                         borderColor: "var(--border-subtle)",
                         color: "var(--text-primary)",
@@ -336,7 +336,7 @@ export default function Services() {
                   {/* Title + description + tags */}
                   <div className="md:col-span-7">
                     <h3
-                      className="font-satoshi font-black uppercase tracking-tighter mb-4 leading-none transition-all duration-500"
+                      className="font-satoshi font-black uppercase tracking-tighter mb-4 leading-none transition-opacity duration-500"
                       style={{
                         fontSize: "clamp(1.5rem, 3vw, 2.8rem)",
                         color: "var(--text-primary)",
@@ -355,7 +355,7 @@ export default function Services() {
                       {svc.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="font-satoshi text-[10px] uppercase tracking-[0.4em] px-3 py-1.5 rounded-full border transition-all duration-300"
+                          className="font-satoshi text-[10px] uppercase tracking-[0.4em] px-3 py-1.5 rounded-full border transition-[background-color,border-color,opacity] duration-300"
                           style={{
                             borderColor: "var(--border-subtle)",
                             color: "var(--text-primary)",
@@ -373,7 +373,7 @@ export default function Services() {
                   <div className="hidden md:flex md:col-span-3 flex-col items-end justify-between h-full">
                     <ArrowUpRight
                       size={22}
-                      className="transition-all duration-500"
+                      className="transition-[opacity,transform] duration-500"
                       style={{
                         color: "var(--text-primary)",
                         opacity: isHovered ? 1 : 0.2,
@@ -388,7 +388,7 @@ export default function Services() {
                         Track record
                       </span>
                       <span
-                        className="font-satoshi font-black text-lg transition-all duration-500"
+                        className="font-satoshi font-black text-lg transition-opacity duration-500"
                         style={{
                           color: "var(--text-primary)",
                           opacity: isHovered ? 0.9 : 0.35,
@@ -401,11 +401,13 @@ export default function Services() {
 
                 </div>
 
-                {/* Progress bar — animates on hover */}
+                {/* Progress bar — animates on hover. scaleX (not width) so this stays
+                    a compositor-only transform instead of triggering layout. */}
                 <div
-                  className="absolute bottom-0 left-0 h-px rounded-full transition-all duration-700"
+                  className="absolute bottom-0 left-0 w-full h-px rounded-full transition-transform duration-700"
                   style={{
-                    width: isHovered ? "100%" : "0%",
+                    transform: `scaleX(${isHovered ? 1 : 0})`,
+                    transformOrigin: "left",
                     background: "var(--text-primary)",
                     opacity: 0.15,
                   }}
@@ -433,7 +435,7 @@ export default function Services() {
               const el = document.getElementById("contact");
               if (el) getLenis()?.scrollTo(el, { offset: -80, duration: 1.2 });
             }}
-            className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border shrink-0 transition-all duration-300 hover:scale-105 active:scale-95 group flex items-center gap-3"
+            className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full border shrink-0 transition-[background-color,color,transform] duration-300 hover:scale-105 active:scale-95 group flex items-center gap-3"
             style={{
               borderColor: "var(--border-subtle)",
               color: "var(--text-primary)",
