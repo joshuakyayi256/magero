@@ -94,7 +94,7 @@ export default function Hero() {
       if (statItems?.length) {
         gsap.fromTo(statItems,
           { y: 20, opacity: 0 },
-          { y: 0, opacity: 1, stagger: 0.1, duration: 0.8, ease: "back.out(1.5)", delay: 1.4 }
+          { y: 0, opacity: 1, stagger: 0.1, duration: 0.7, ease: "power3.out", delay: 1.4 }
         );
       }
 
@@ -139,8 +139,8 @@ export default function Hero() {
         yPercent: -115,
         opacity: 0,
         rotateX: 12,
-        duration: 0.4,
-        ease: "power3.in",
+        duration: 0.35,
+        ease: "power2.out",
         onComplete: () => {
           indexRef.current = nextIdx;
           setSpecIdx(nextIdx);
@@ -195,6 +195,16 @@ export default function Hero() {
   };
   const magneticLeave = (ref: React.RefObject<HTMLButtonElement | null>) => {
     gsap.to(ref.current, { x: 0, y: 0, scale: 1, duration: 0.65, ease: "elastic.out(1, 0.45)" });
+  };
+  // Buttons must feel responsive to a press. A CSS `active:` class can't
+  // reach these — the magnetic hover above already drives `transform` via
+  // inline style, which always wins over a stylesheet rule for the same
+  // property — so press feedback is a GSAP tween on the same element instead.
+  const magneticPress = (ref: React.RefObject<HTMLButtonElement | null>) => {
+    gsap.to(ref.current, { scale: 0.96, duration: 0.1, ease: "power2.out" });
+  };
+  const magneticRelease = (ref: React.RefObject<HTMLButtonElement | null>) => {
+    gsap.to(ref.current, { scale: 1, duration: 0.3, ease: "power2.out" });
   };
 
   const scrollToSection = (id: string) => {
@@ -258,7 +268,7 @@ export default function Hero() {
             <div ref={taglineRef} className="flex flex-wrap gap-2">
               {SPECIALTIES.map((s, i) => (
                 <span key={s}
-                  className="font-satoshi font-black text-[8px] uppercase tracking-[0.4em] px-3 py-1.5 rounded-full border transition-all duration-500"
+                  className="font-satoshi font-black text-[8px] uppercase tracking-[0.4em] px-3 py-1.5 rounded-full border transition-[background-color,border-color,opacity] duration-500"
                   style={{
                     borderColor: i === specIdx ? "color-mix(in srgb, var(--text-primary) 40%, transparent)" : "var(--border-subtle)",
                     color: "var(--text-primary)",
@@ -306,6 +316,8 @@ export default function Hero() {
               onClick={() => scrollToSection("contact")}
               onMouseMove={(e) => magneticMove(e, ctaRef)}
               onMouseLeave={() => magneticLeave(ctaRef)}
+              onMouseDown={() => magneticPress(ctaRef)}
+              onMouseUp={() => magneticRelease(ctaRef)}
               className="font-satoshi font-black text-sm uppercase tracking-widest px-8 py-4 rounded-full flex items-center gap-3 group"
               style={{ background: "var(--text-primary)", color: "var(--bg-primary)", clipPath: "inset(0 100% 0 0)" }}
             >
@@ -316,6 +328,8 @@ export default function Hero() {
             <button ref={ctaSecRef} type="button"
               onClick={() => scrollToSection("works")}
               onMouseMove={(e) => magneticMove(e, ctaSecRef)}
+              onMouseDown={() => magneticPress(ctaSecRef)}
+              onMouseUp={() => magneticRelease(ctaSecRef)}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLElement).style.background = "color-mix(in srgb, var(--text-primary) 6%, transparent)";
                 gsap.to(e.currentTarget, { scale: 1.04, duration: 0.3, ease: "power2.out" });

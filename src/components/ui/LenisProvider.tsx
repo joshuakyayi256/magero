@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { initLenis } from "@/lib/lenis";
 
@@ -15,6 +16,23 @@ export default function LenisProvider() {
     document.fonts?.ready.then(refresh);
     window.addEventListener("load", refresh);
     return () => window.removeEventListener("load", refresh);
+
+    // Respect prefers-reduced-motion without rewriting every GSAP call
+    // site-wide: cranking the global timeline speed collapses every tween's
+    // travel time to a couple of frames while still rendering through each
+    // one's real keyframes, so elements land in their correct final state
+    // (opacity/position/etc.) almost immediately instead of sliding/parallaxing.
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const applyMotionPreference = () => {
+      gsap.globalTimeline.timeScale(media.matches ? 60 : 1);
+    };
+    applyMotionPreference();
+    media.addEventListener("change", applyMotionPreference);
+
+    return () => {
+      window.removeEventListener("load", refresh);
+      media.removeEventListener("change", applyMotionPreference);
+    };
   }, []);
 
   return null;
