@@ -65,9 +65,9 @@ export default function ProjectSlug({ params }: { params: Promise<{ slug: string
         <div className="max-w-7xl mx-auto">
           {project.comingSoon ? (
             <div className="border-t border-black/5 pt-12">
-              <h3 className="font-satoshi font-black text-xs uppercase tracking-widest text-black/40 mb-4">
+              <h2 className="font-satoshi font-black text-xs uppercase tracking-widest text-black/40 mb-4">
                 Full Case Study
-              </h3>
+              </h2>
               <p className="font-sen text-xl text-black/70 leading-relaxed max-w-2xl">
                 The detailed write-up for this project — challenge, approach, and outcome — is coming soon.
               </p>
@@ -75,17 +75,33 @@ export default function ProjectSlug({ params }: { params: Promise<{ slug: string
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-12 gap-20 items-start">
               <div className="md:col-span-6 space-y-8">
-                <h3 className="font-satoshi font-black text-xs uppercase tracking-widest text-black/40 border-b border-black/5 pb-4">01 // The Challenge</h3>
+                <h2 className="font-satoshi font-black text-xs uppercase tracking-widest text-black/40 border-b border-black/5 pb-4">01 // The Challenge</h2>
                 <p className="font-sen text-xl text-black/70 leading-relaxed">{project.challenge}</p>
               </div>
               <div className="md:col-span-6 space-y-8">
-                <h3 className="font-satoshi font-black text-xs uppercase tracking-widest text-black/40 border-b border-black/5 pb-4">02 // The Solution</h3>
+                <h2 className="font-satoshi font-black text-xs uppercase tracking-widest text-black/40 border-b border-black/5 pb-4">02 // The Solution</h2>
                 <p className="font-sen text-xl text-black/70 leading-relaxed">{project.solution}</p>
               </div>
             </div>
           )}
         </div>
       </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            name: project.title,
+            description: project.description ?? project.teaser,
+            creator: { "@type": "Person", name: "Magero Kyayi Joshua" },
+            about: project.category,
+            ...(project.year ? { dateCreated: project.year } : {}),
+            ...(project.tools ? { keywords: project.tools.join(", ") } : {}),
+          }),
+        }}
+      />
     </article>
   );
 }

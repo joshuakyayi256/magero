@@ -130,16 +130,20 @@ export default function ExperienceBrief() {
     return () => ctx.revert();
   }, []);
 
-  // Magnetic hover for social icons
+  // Magnetic hover for social icons.
+  // overwrite: false — these share the `y` property with the scroll-triggered
+  // entrance animation above; without it, GSAP's default auto-overwrite can
+  // kill the (still-paused, pre-scroll) entrance tween if the cursor passes
+  // over a link before its ScrollTrigger fires, leaving it stuck invisible.
   const handleSocialMove = (e: React.MouseEvent<HTMLAnchorElement>) => {
     const el   = e.currentTarget;
     const rect = el.getBoundingClientRect();
     const dx   = (e.clientX - rect.left - rect.width  / 2) * 0.3;
     const dy   = (e.clientY - rect.top  - rect.height / 2) * 0.3;
-    gsap.to(el, { x: dx, y: dy, duration: 0.3, ease: "power2.out" });
+    gsap.to(el, { x: dx, y: dy, duration: 0.3, ease: "power2.out", overwrite: false });
   };
   const handleSocialLeave = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    gsap.to(e.currentTarget, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.45)" });
+    gsap.to(e.currentTarget, { x: 0, y: 0, duration: 0.6, ease: "elastic.out(1, 0.45)", overwrite: false });
   };
 
   return (

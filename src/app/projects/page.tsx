@@ -24,11 +24,11 @@ export default function ProjectsIndex() {
                 whileHover={{ x: 20 }}
                 className="group border-b border-white/5 py-10 flex flex-col md:flex-row md:items-center justify-between transition-all"
               >
-                <div className="flex items-center gap-8">
-                  <span className="font-satoshi text-white/20 text-xl font-bold">
+                <div className="flex items-center gap-4 md:gap-8 min-w-0">
+                  <span className="font-satoshi text-white/20 text-xl font-bold shrink-0">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h2 className="font-satoshi text-4xl md:text-6xl font-black uppercase text-white group-hover:text-white/60 transition-colors">
+                  <h2 className="font-satoshi text-2xl sm:text-4xl md:text-6xl font-black uppercase text-white group-hover:text-white/60 transition-colors break-words min-w-0">
                     {project.title}
                   </h2>
                 </div>

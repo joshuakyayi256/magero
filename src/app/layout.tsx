@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Urbanist } from 'next/font/google';
 import localFont from 'next/font/local';
@@ -6,6 +6,7 @@ import ThemeToggle from '@/components/ui/ThemeToggle';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/sections/Footer';
 import LenisProvider from '@/components/ui/LenisProvider';
+import { siteConfig } from '@/lib/site';
 
 const satoshi = localFont({
   src: '../fonts/Satoshi-Variable.woff2', // Correct: goes up to src, then into fonts/
@@ -19,9 +20,77 @@ const sen = Urbanist({
   variable: '--font-sen',
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f5f7" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
+};
+
 export const metadata: Metadata = {
-  title: "Magero Kyayi Joshua | Founder, Digital Infrastructure for East African Institutions",
-  description: "Founder of Soma & Synsify. Building institutional-grade systems — insurance, edtech, fintech — for East African conditions.",
+  metadataBase: new URL(siteConfig.url),
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [{ name: siteConfig.author, url: siteConfig.url }],
+  creator: siteConfig.author,
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: siteConfig.url,
+    siteName: siteConfig.name,
+    title: siteConfig.title,
+    description: siteConfig.description,
+    locale: siteConfig.locale,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.title,
+    description: siteConfig.description,
+  },
+  verification: {
+    // Paste the Google Search Console HTML-tag verification code here once
+    // you've added the property, e.g. google: "abc123...".
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: siteConfig.author,
+  url: siteConfig.url,
+  jobTitle: "Founder & Systems Architect",
+  worksFor: { "@type": "Organization", name: "MUA Insurance" },
+  founder: [
+    { "@type": "Organization", name: "Soma" },
+    { "@type": "Organization", name: "Synsify" },
+  ],
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Kampala",
+    addressCountry: "UG",
+  },
+  email: siteConfig.email,
+  sameAs: [siteConfig.social.github, siteConfig.social.linkedin, siteConfig.social.instagram],
 };
 
 export default function RootLayout({
@@ -36,6 +105,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var t=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',t);}catch(e){}})();`,
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
       <body
