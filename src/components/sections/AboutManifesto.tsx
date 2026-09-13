@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
 import { SplitText } from "gsap/dist/SplitText";
@@ -10,7 +11,7 @@ if (typeof window !== "undefined") {
 
 export default function AboutManifesto() {
   const sectionRef   = useRef<HTMLElement>(null);
-  const imageRef     = useRef<HTMLDivElement>(null);
+  const imageRef     = useRef<HTMLImageElement>(null);
   const imageWrapRef = useRef<HTMLDivElement>(null);
   const eyebrowRef   = useRef<HTMLDivElement>(null);
   const headingRef   = useRef<HTMLHeadingElement>(null);
@@ -184,11 +185,15 @@ export default function AboutManifesto() {
               onMouseEnter={handleImgEnter}
               onMouseLeave={handleImgLeave}
             >
-              <div
+              <Image
                 ref={imageRef}
-                className="absolute inset-[-20%] w-[140%] h-[140%] bg-cover bg-center"
+                src="/magero-portrait.jpg"
+                alt="Magero Kyayi Joshua, founder of Soma and Synsify, portrait photograph"
+                width={960}
+                height={1200}
+                priority
+                className="absolute inset-[-20%] w-[140%] h-[140%] object-cover"
                 style={{
-                  backgroundImage: "url('/magero-portrait.jpg')",
                   filter: "grayscale(100%) brightness(70%) contrast(1.2)",
                   willChange: "transform",
                 }}

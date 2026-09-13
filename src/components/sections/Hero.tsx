@@ -37,7 +37,7 @@ function scrambleTo(el: HTMLElement, target: string, duration = 0.65, onComplete
 export default function Hero() {
   const sectionRef   = useRef<HTMLElement>(null);
   const eyebrowRef   = useRef<HTMLSpanElement>(null);
-  const line1Ref     = useRef<HTMLSpanElement>(null);
+  const line1Ref     = useRef<HTMLHeadingElement>(null);
   const subRef       = useRef<HTMLParagraphElement>(null);
   const ctaRef       = useRef<HTMLButtonElement>(null);
   const ctaSecRef    = useRef<HTMLButtonElement>(null);
@@ -240,12 +240,12 @@ export default function Hero() {
         {/* Headline */}
         <div className="mb-10 overflow-hidden" style={{ perspective: "1000px" }}>
           <div className="overflow-hidden">
-            <span ref={line1Ref}
+            <h1 ref={line1Ref}
               className="font-satoshi font-black uppercase tracking-tighter leading-[0.88] block"
               style={{ fontSize: "clamp(2.25rem, 11vw, 10.5rem)", color: "var(--text-primary)" }}
             >
               {SPECIALTIES[0].toUpperCase()}
-            </span>
+            </h1>
           </div>
         </div>
 

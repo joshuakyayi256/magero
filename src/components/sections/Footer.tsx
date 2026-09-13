@@ -137,10 +137,10 @@ export default function Footer() {
                 </span>
               </div>
 
-              <h3 ref={ctaHeadRef} className="font-satoshi font-black uppercase tracking-tighter leading-[0.85] mb-8 text-[clamp(2.25rem,8vw,7rem)]">
+              <h2 ref={ctaHeadRef} className="font-satoshi font-black uppercase tracking-tighter leading-[0.85] mb-8 text-[clamp(2.25rem,8vw,7rem)]">
                 Let us build<br />
                 <span className="text-white/20">the future.</span>
-              </h3>
+              </h2>
 
               <p className="font-sen text-base md:text-lg text-white/50 max-w-lg mb-10 leading-relaxed">
                 Building infrastructure for an African institution, or investing in
