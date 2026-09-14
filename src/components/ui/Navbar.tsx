@@ -174,7 +174,7 @@ export default function Navbar() {
           borderBottom: showSolid ? `1px solid ${border}` : "1px solid transparent",
         }}
       >
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+        <div className="max-w-[1440px] mx-auto flex items-center justify-between">
 
           {/* Logo */}
           <Link

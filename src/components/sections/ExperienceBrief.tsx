@@ -152,7 +152,7 @@ export default function ExperienceBrief() {
       className="relative py-24 md:py-32 px-6 md:px-16 lg:px-24 border-t overflow-hidden transition-colors duration-500"
       style={{ borderColor: "var(--border-subtle)" }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-16 gap-x-8 xl:gap-x-16">
 
           {/* ── LEFT COLUMN ── */}

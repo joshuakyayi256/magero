@@ -142,7 +142,7 @@ export default function ProjectGrid() {
       className="relative py-28 md:py-40 px-6 md:px-16 lg:px-24 overflow-hidden border-t transition-colors duration-500"
       style={{ borderColor: "var(--border-subtle)" }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1440px] mx-auto">
 
         {/* ── HEADER ── */}
         <div className="mb-16 md:mb-20">

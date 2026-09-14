@@ -238,7 +238,7 @@ export default function Hero() {
       />
 
       {/* ── Content ── */}
-      <div className="relative z-10 px-6 md:px-16 lg:px-24 w-full max-w-7xl mx-auto">
+      <div className="relative z-10 px-6 md:px-16 lg:px-24 w-full max-w-[1440px] mx-auto">
 
         <div ref={lineRef} className="mb-8 h-px w-16" style={{ background: "var(--text-primary)", opacity: 0.2 }} />
 

@@ -7,7 +7,7 @@ import { projects } from "@/data/projects";
 export default function ProjectsIndex() {
   return (
     <section className="bg-[#0a0a0a] min-h-screen py-32 px-6 md:px-20">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1440px] mx-auto">
         <div className="mb-20 flex items-end justify-between border-b border-white/10 pb-10">
           <h1 className="font-satoshi text-[10vw] md:text-[6vw] font-black uppercase tracking-tighter leading-none">
             Selected <br /><span className="text-white/20">Works.</span>

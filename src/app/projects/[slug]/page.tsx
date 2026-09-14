@@ -20,8 +20,8 @@ export default function ProjectSlug({ params }: { params: Promise<{ slug: string
           <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back to Works
         </Link>
         
-        <div className="max-w-7xl mx-auto">
-          <motion.h1 
+        <div className="max-w-[1440px] mx-auto">
+          <motion.h1
             initial={{ y: 60, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             className="font-satoshi text-[9vw] md:text-[8vw] font-black leading-[0.85] uppercase tracking-tighter mb-16 break-words"
@@ -45,7 +45,7 @@ export default function ProjectSlug({ params }: { params: Promise<{ slug: string
 
       {/* 02. Technical Metadata Table */}
       <section className="py-20 px-6 md:px-20">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 border-y border-black/5 py-12">
+        <div className="max-w-[1440px] mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 border-y border-black/5 py-12">
           {[
             { label: "Year", value: project.year ?? "TBD" },
             { label: "Category", value: project.category },
@@ -62,7 +62,7 @@ export default function ProjectSlug({ params }: { params: Promise<{ slug: string
 
       {/* 03. Problem/Solution Architecture */}
       <section className="pb-32 px-6 md:px-20">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-[1440px] mx-auto">
           {project.comingSoon ? (
             <div className="border-t border-black/5 pt-12">
               <h2 className="font-satoshi font-black text-xs uppercase tracking-widest text-black/40 mb-4">

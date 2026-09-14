@@ -122,7 +122,7 @@ export default function Footer() {
       className="relative bg-[#0a0a0a] text-white pt-32 overflow-hidden flex flex-col justify-between min-h-screen z-50"
       data-theme="dark" // Forces dark mode for the footer anchor
     >
-      <div className="px-6 md:px-16 lg:px-24 max-w-7xl mx-auto w-full flex-1">
+      <div className="px-6 md:px-16 lg:px-24 max-w-[1440px] mx-auto w-full flex-1">
         
         {/* ── TOP GRID: CTA & LINKS ── */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-y-20 gap-x-8 mb-32">

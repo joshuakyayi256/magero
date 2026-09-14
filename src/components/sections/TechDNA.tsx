@@ -170,7 +170,7 @@ export default function TechDNA() {
     >
 
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1440px] mx-auto">
 
         {/* ── TOP: eyebrow + heading + sub ── */}
         <div className="mb-16 md:mb-24">

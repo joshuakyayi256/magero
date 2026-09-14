@@ -223,7 +223,7 @@ export default function Services() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-[1440px] mx-auto relative z-10">
 
         {/* ── HEADER BLOCK ── */}
         <div className="mb-20 md:mb-28">

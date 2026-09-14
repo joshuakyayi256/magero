@@ -170,7 +170,7 @@ export default function AboutManifesto() {
         }}
       />
 
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1440px] mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-y-16 gap-x-8 xl:gap-x-20 items-start">
 
           {/* ── LEFT: Portrait ── */}
@@ -290,8 +290,9 @@ export default function AboutManifesto() {
               style={{ background: "var(--border-subtle)" }}
             />
 
-            {/* Body copy */}
-            <div className="space-y-6">
+            {/* Body copy — capped at a readable measure independent of how
+                wide the outer container gets on large screens. */}
+            <div className="space-y-6 max-w-[65ch]">
               <p
                 ref={para1Ref}
                 className="font-sen leading-relaxed"
