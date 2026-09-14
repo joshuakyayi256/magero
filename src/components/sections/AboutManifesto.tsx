@@ -23,7 +23,10 @@ export default function AboutManifesto() {
   useEffect(() => {
     const ctx = gsap.context(() => {
 
-      // 1. Image — parallax scrub
+      // 1. Image — constant zoom (buffer for the parallax below) + scroll scrub.
+      // Set as a GSAP transform (not a CSS class) so it composes correctly
+      // with the yPercent tween instead of being overwritten by it.
+      gsap.set(imageRef.current, { scale: 1.15 });
       gsap.to(imageRef.current, {
         yPercent: -6,
         ease: "none",
@@ -189,10 +192,10 @@ export default function AboutManifesto() {
                 ref={imageRef}
                 src="/magero-portrait.jpg"
                 alt="Magero Kyayi Joshua, founder of Soma and Synsify, portrait photograph"
-                width={960}
-                height={1200}
+                fill
+                sizes="(min-width: 1024px) 40vw, 90vw"
                 priority
-                className="absolute inset-[-7.5%] w-[115%] h-[115%] object-cover object-[center_25%]"
+                className="object-cover object-[center_25%]"
                 style={{
                   filter: "grayscale(100%) brightness(70%) contrast(1.2)",
                   willChange: "transform",
